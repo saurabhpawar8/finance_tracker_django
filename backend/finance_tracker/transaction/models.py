@@ -4,6 +4,11 @@ from account.models import Account
 from category.models import Category
 
 
+class TransactionManager(models.Manager):
+    def createTransaction(self, params):
+        return self.create(**params)
+
+
 class Transaction(models.Model):
     TRANSACTION_TYPE_CHOICES = [
         ('Income', 'Income'),
@@ -17,6 +22,7 @@ class Transaction(models.Model):
     account = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='accounts_transactions')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='category_transactions')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_transactions')
+    objects = TransactionManager()
 
     def __str__(self):
         return str(self.pk)

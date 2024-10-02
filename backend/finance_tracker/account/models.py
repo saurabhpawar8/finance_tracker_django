@@ -1,6 +1,9 @@
+from decimal import Decimal
+
 from django.db import models
 from django.db.models import ForeignKey
 from django.contrib.auth.models import User
+from unicodedata import decimal
 
 from shared.exceptions import ResourceNotFound
 
@@ -25,6 +28,14 @@ class AccountManager(models.Manager):
         except:
             raise ResourceNotFound("Account not found")
         return account
+
+    def modifyAccountBalance(self, account, transaction_type, amount):
+        print(account.balance, transaction_type, amount)
+        if transaction_type == "Income":
+            account.balance += amount
+        else:
+            account.balance -= amount
+        account.save(update_fields=["balance"])
 
 
 class Account(models.Model):

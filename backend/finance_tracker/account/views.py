@@ -30,9 +30,9 @@ class AddAccount(APIView):
             return Response({"message": "Account created successfully!"}, status=status.HTTP_201_CREATED)
 
         except AlreadyExists as e:
-            return Response({"message": str(e.message)}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"message": str(e.message)}, status=status.HTTP_302_FOUND)
         except Exception as e:
-            return Response({"message": e}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class GetAccounts(APIView):
