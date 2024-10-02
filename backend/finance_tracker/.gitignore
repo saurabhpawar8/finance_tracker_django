@@ -1,2 +1,7 @@
-venv/
-.idea/
+/venv
+/.idea
+/user/migrations
+/category/migrations
+/transaction/migrations
+/account/migrations
+/shared/migrations
