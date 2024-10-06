@@ -29,13 +29,27 @@ class AccountManager(models.Manager):
             raise ResourceNotFound("Account not found")
         return account
 
-    def modifyAccountBalance(self, account, transaction_type, amount):
-        print(account.balance, transaction_type, amount)
-        if transaction_type == "Income":
-            account.balance += amount
-        else:
-            account.balance -= amount
+    def incrementAccountBalance(self, account, amount):
+        account.balance += amount
         account.save(update_fields=["balance"])
+
+    def decrementAccountBalance(self, account, amount):
+        account.balance -= amount
+        account.save(update_fields=["balance"])
+
+    def updateTransferAccountBalance(self, from_account, to_account, amount):
+        from_account.balance -= amount
+        to_account.balance += amount
+        from_account.save(update_fields=["balance"])
+        to_account.save(update_fields=["balance"])
+
+    def modifyAccountBalanceIfTransactionTypeDiff(self, transaction_type, amount, previous_amt, account):
+        if transaction_type == "Income":
+            account.balance += (previous_amt + amount)
+            account.save(update_fields=["balance"])
+        elif transaction_type == "Expense":
+            account.balance -= (previous_amt - amount)
+            account.save(update_fields=["balance"])
 
 
 class Account(models.Model):
