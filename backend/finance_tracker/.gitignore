@@ -5,3 +5,4 @@
 /transaction/migrations
 /account/migrations
 /shared/migrations
+.env
